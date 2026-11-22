@@ -1,96 +1,517 @@
-
+x
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Tying Speed Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f4f7;
-            padding: 30px;
-        }
-        .container {
-            max-width: 400px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px #ccc;
-        }
-        h2 {
-            text-align: center;
-            color: #174a7e;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #1769aa;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f3ff;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Typing Speed Test</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px #0005;
+}
+
+h1 {
+    text-align: center;
+    color: #38bdf8;
+}
+
+.subtitle {
+    text-align: center;
+    color: #cbd5e1;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.stat {
+    background: #334155;
+    padding: 15px 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat h2 {
+    color: #38bdf8;
+    margin: 5px;
+    font-size: 25px;
+}
+
+.stat p {
+    color: #cbd5e1;
+    font-size: 13px;
+    margin: 5px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+select, button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+select {
+    background: #334155;
+    color: white;
+}
+
+button {
+    background: #0284c7;
+    color: white;
+}
+
+button:hover {
+    background: #0369a1;
+}
+
+#textDisplay {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 2;
+    font-size: 19px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    min-height: 130px;
+}
+
+.correct {
+    color: #4ade80;
+}
+
+.incorrect {
+    color: #fb7185;
+    background: #7f1d1d;
+}
+
+.current {
+    border-bottom: 3px solid #38bdf8;
+}
+
+textarea {
+    width: 100%;
+    height: 130px;
+    padding: 15px;
+    font-size: 17px;
+    border: 2px solid #475569;
+    border-radius: 10px;
+    background: #0f172a;
+    color: white;
+    resize: none;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #38bdf8;
+}
+
+.progress {
+    height: 10px;
+    background: #475569;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    background: #38bdf8;
+    transition: width .2s;
+}
+
+.result {
+    display: none;
+    background: #334155;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.result h2 {
+    color: #4ade80;
+}
+
+footer {
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 25px;
+}
+
+@media(max-width:600px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .container {
+        padding: 15px;
+    }
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <h2>Tying Speed Calculator</h2>
 
-    <label>Total Ties Completed:</label>
-    <input type="number" id="ties" placeholder="Enter total ties">
+<h1>⌨ Typing Speed Test</h1>
+<p class="subtitle">Improve your typing speed and accuracy</p>
 
-    <label>Time Taken (Minutes):</label>
-    <input type="number" id="time" placeholder="Enter time in minutes">
+<div class="stats">
 
-    <button onclick="calculateSpeed()">Calculate Speed</button>
+<div class="stat">
+<p>TIME LEFT</p>
+<h2 id="timer">60</h2>
+</div>
 
-    <div id="result">Result will appear here</div>
+<div class="stat">
+<p>WPM</p>
+<h2 id="wpm">0</h2>
+</div>
+
+<div class="stat">
+<p>ACCURACY</p>
+<h2 id="accuracy">100%</h2>
+</div>
+
+<div class="stat">
+<p>ERRORS</p>
+<h2 id="errors">0</h2>
+</div>
+
+</div>
+
+<div class="controls">
+
+<select id="duration">
+<option value="60">1 Minute</option>
+<option value="120">2 Minutes</option>
+<option value="180">3 Minutes</option>
+<option value="300">5 Minutes</option>
+</select>
+
+<button onclick="startTest()">Start Test</button>
+<button onclick="resetTest()">Reset</button>
+
+</div>
+
+<div id="textDisplay"></div>
+
+<textarea id="typing"
+placeholder="Click Start Test and begin typing..."
+disabled></textarea>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+<div class="result" id="result">
+
+<h2>Test Completed!</h2>
+
+<h3 id="finalWpm"></h3>
+<h3 id="finalAccuracy"></h3>
+<h3 id="finalErrors"></h3>
+<h3 id="finalWords"></h3>
+<h3 id="rating"></h3>
+<h3 id="bestScore"></h3>
+
+<button onclick="startTest()">Try Again</button>
+
+</div>
+
+<footer>
+Typing Speed Test | Practice Every Day
+</footer>
+
 </div>
 
 <script>
-function calculateSpeed() {
-    let ties = parseFloat(document.getElementById("ties").value);
-    let time = parseFloat(document.getElementById("time").value);
 
-    if (isNaN(ties) || isNaN(time) || ties < 0 || time <= 0) {
-        document.getElementById("result").innerHTML =
-            "Please enter valid values.";
-        return;
+const paragraphs = [
+"Learning is a continuous process that helps us improve our knowledge and skills. Regular practice makes us faster, more accurate and more confident.",
+
+"Technology has changed the way people communicate, work and learn. Computers and the internet make information available around the world.",
+
+"Success comes through dedication, patience and consistent effort. Practice every day and focus on improving your skills and achieving your goals."
+];
+
+let sampleText = "";
+let startTime = 0;
+let timeLeft = 60;
+let duration = 60;
+let timer = null;
+let running = false;
+let finished = false;
+
+const typing = document.getElementById("typing");
+const display = document.getElementById("textDisplay");
+
+function newParagraph() {
+    sampleText = paragraphs[
+        Math.floor(Math.random() * paragraphs.length)
+    ];
+}
+
+function renderText() {
+    let typed = typing.value;
+    let html = "";
+
+    for (let i = 0; i < sampleText.length; i++) {
+
+        let cls = "";
+
+        if (i < typed.length) {
+            cls = typed[i] === sampleText[i]
+                ? "correct"
+                : "incorrect";
+        } else if (i === typed.length) {
+            cls = "current";
+        }
+
+        html += `<span class="${cls}">${escapeHTML(sampleText[i])}</span>`;
     }
 
-    let speed = ties / time;
-    let hourlySpeed = speed * 60;
-
-    document.getElementById("result").innerHTML =
-        "Tying Speed: " + speed.toFixed(2) + " Ties/Minute<br><br>" +
-        "Hourly Speed: " + hourlySpeed.toFixed(2) + " Ties/Hour";
+    display.innerHTML = html;
 }
+
+function escapeHTML(char) {
+    return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    }[char] || char;
+}
+
+function startTest() {
+
+    clearInterval(timer);
+
+    duration = Number(
+        document.getElementById("duration").value
+    );
+
+    timeLeft = duration;
+    running = true;
+    finished = false;
+
+    typing.value = "";
+    typing.disabled = false;
+    typing.focus();
+
+    document.getElementById("result").style.display = "none";
+
+    newParagraph();
+    renderText();
+    updateStats();
+
+    startTime = Date.now();
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        document.getElementById("timer").textContent = timeLeft;
+
+        updateStats();
+
+        if (timeLeft <= 0) {
+            finishTest();
+        }
+
+    }, 1000);
+}
+
+typing.addEventListener("input", function() {
+
+    if (!running || finished) return;
+
+    renderText();
+    updateStats();
+
+    if (typing.value.length >= sampleText.length) {
+        finishTest();
+    }
+});
+
+function updateStats() {
+
+    let typed = typing.value;
+    let correct = 0;
+    let errors = 0;
+
+    for (let i = 0; i < typed.length; i++) {
+        if (typed[i] === sampleText[i]) {
+            correct++;
+        } else {
+            errors++;
+        }
+    }
+
+    let elapsed = Math.max(
+        0.001,
+        (Date.now() - startTime) / 60000
+    );
+
+    let words = typed.trim()
+        ? typed.trim().split(/\s+/).length
+        : 0;
+
+    let wpm = Math.round(words / elapsed);
+
+    let accuracy = typed.length
+        ? Math.round(correct / typed.length * 100)
+        : 100;
+
+    document.getElementById("wpm").textContent = wpm;
+    document.getElementById("accuracy").textContent = accuracy + "%";
+    document.getElementById("errors").textContent = errors;
+
+    let progress = Math.min(
+        100,
+        typed.length / sampleText.length * 100
+    );
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+}
+
+function finishTest() {
+
+    if (finished) return;
+
+    finished = true;
+    running = false;
+
+    clearInterval(timer);
+    typing.disabled = true;
+
+    let typed = typing.value;
+    let correct = 0;
+    let errors = 0;
+
+    for (let i = 0; i < typed.length; i++) {
+        if (typed[i] === sampleText[i]) {
+            correct++;
+        } else {
+            errors++;
+        }
+    }
+
+    let elapsed = Math.max(
+        0.001,
+        (Date.now() - startTime) / 60000
+    );
+
+    let words = typed.trim()
+        ? typed.trim().split(/\s+/).length
+        : 0;
+
+    let wpm = Math.round(words / elapsed);
+
+    let accuracy = typed.length
+        ? Math.round(correct / typed.length * 100)
+        : 0;
+
+    let best = Number(localStorage.getItem("bestWPM") || 0);
+
+    if (wpm > best) {
+        best = wpm;
+        localStorage.setItem("bestWPM", best);
+    }
+
+    let rating = "Keep Practicing!";
+
+    if (wpm >= 60 && accuracy >= 95) {
+        rating = "Excellent!";
+    } else if (wpm >= 40 && accuracy >= 90) {
+        rating = "Very Good!";
+    } else if (wpm >= 25) {
+        rating = "Good!";
+    }
+
+    document.getElementById("finalWpm").textContent =
+        "Typing Speed: " + wpm + " WPM";
+
+    document.getElementById("finalAccuracy").textContent =
+        "Accuracy: " + accuracy + "%";
+
+    document.getElementById("finalErrors").textContent =
+        "Errors: " + errors;
+
+    document.getElementById("finalWords").textContent =
+        "Words Typed: " + words;
+
+    document.getElementById("rating").textContent =
+        "Performance: " + rating;
+
+    document.getElementById("bestScore").textContent =
+        "Personal Best: " + best + " WPM";
+
+    document.getElementById("result").style.display = "block";
+}
+
+function resetTest() {
+
+    clearInterval(timer);
+
+    running = false;
+    finished = false;
+
+    typing.value = "";
+    typing.disabled = true;
+
+    timeLeft = Number(
+        document.getElementById("duration").value
+    );
+
+    document.getElementById("timer").textContent = timeLeft;
+    document.getElementById("wpm").textContent = "0";
+    document.getElementById("accuracy").textContent = "100%";
+    document.getElementById("errors").textContent = "0";
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("result").style.display = "none";
+
+    newParagraph();
+    renderText();
+}
+
+resetTest();
+
 </script>
 
 </body>
 </html>
-
