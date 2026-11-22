@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tying Speed Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            padding: 30px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #ccc;
+        }
+        h2 {
+            text-align: center;
+            color: #174a7e;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #1769aa;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f3ff;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Tying Speed Calculator</h2>
+
+    <label>Total Ties Completed:</label>
+    <input type="number" id="ties" placeholder="Enter total ties">
+
+    <label>Time Taken (Minutes):</label>
+    <input type="number" id="time" placeholder="Enter time in minutes">
+
+    <button onclick="calculateSpeed()">Calculate Speed</button>
+
+    <div id="result">Result will appear here</div>
+</div>
+
+<script>
+function calculateSpeed() {
+    let ties = parseFloat(document.getElementById("ties").value);
+    let time = parseFloat(document.getElementById("time").value);
+
+    if (isNaN(ties) || isNaN(time) || ties < 0 || time <= 0) {
+        document.getElementById("result").innerHTML =
+            "Please enter valid values.";
+        return;
+    }
+
+    let speed = ties / time;
+    let hourlySpeed = speed * 60;
+
+    document.getElementById("result").innerHTML =
+        "Tying Speed: " + speed.toFixed(2) + " Ties/Minute<br><br>" +
+        "Hourly Speed: " + hourlySpeed.toFixed(2) + " Ties/Hour";
+}
+</script>
+
+</body>
+</html>
+
